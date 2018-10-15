@@ -9,7 +9,7 @@ public class MainTest {
 
         try {
             while ( true ) {
-                Thread.sleep(200);
+                Thread.sleep(500);
                 System.out.println(pro.getHours() + " - " + pro.getMinutes() + " - " + pro.getSeconds());
             }
         } catch (InterruptedException x) {

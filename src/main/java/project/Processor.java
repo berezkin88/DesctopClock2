@@ -18,31 +18,27 @@ public class Processor implements Runnable{
 
     private void doWork() {
         int firstTimeout = 1000;
-        int timeout;
-        long startTime = System.currentTimeMillis();
-
-        try {
-            Thread.sleep(firstTimeout);
-            elapse();
-        } catch (InterruptedException x) {
-            x.printStackTrace();
-        }
-
-        long finishTime = System.currentTimeMillis();
-
-        int adjust = (int) (finishTime - startTime);
-
-        timeout = adjust > 1000 ? firstTimeout - (adjust - 1000) : firstTimeout + (1000 - adjust);
+        int timeout = firstTimeout;
+        long finishTime = 0L;
 
         noStopRequested = true;
 
         while (noStopRequested) {
+            long startTime = System.currentTimeMillis();
             try {
                 Thread.sleep(timeout);
                 elapse();
+                finishTime = System.currentTimeMillis();
             } catch (InterruptedException x) {
                 x.printStackTrace();
             }
+
+            int adjust = (int) (finishTime - startTime);
+            System.out.println(adjust);
+
+            timeout = adjust > 1000 ? firstTimeout - (adjust - 1000) : firstTimeout + (1000 - adjust);
+
+
         }
     }
 
@@ -50,10 +46,10 @@ public class Processor implements Runnable{
         if (seconds == 59) {
             seconds = 0;
             minutes++;
-            if (minutes == 59) {
+            if (minutes == 60) {
                 minutes = 0;
                 hours++;
-                if (hours == 23) {
+                if (hours == 24) {
                     hours = 0;
                 }
             }
