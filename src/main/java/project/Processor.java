@@ -37,8 +37,6 @@ public class Processor implements Runnable{
             System.out.println(adjust);
 
             timeout = adjust > 1000 ? firstTimeout - (adjust - 1000) : firstTimeout + (1000 - adjust);
-
-
         }
     }
 
