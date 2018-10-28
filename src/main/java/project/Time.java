@@ -9,9 +9,9 @@ import java.util.GregorianCalendar;
 
 public class Time {
     private Calendar calendar;
-    private int hours;
-    private int minutes;
-    private int seconds;
+    private static int hours;
+    private static int minutes;
+    private static int seconds;
 
     public Time() {
         calendar = new GregorianCalendar();
