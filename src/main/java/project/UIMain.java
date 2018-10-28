@@ -1,8 +1,10 @@
 package project;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -22,6 +24,11 @@ public class UIMain extends Application {
         h = new Text(hours.toString());
         columns = new Text(":");
         m = new Text(minutes.toString());
+        h.setFont(new Font("Courier", 36));
+        columns.setFont(new Font("Courier", 36));
+        m.setFont(new Font("Courier", 36));
+
+        rootNode.setAlignment(Pos.CENTER);
 
         rootNode.getChildren().addAll(h, columns, m);
 
@@ -61,7 +68,6 @@ public class UIMain extends Application {
     private static void elapse() {
         if (seconds == 59) {
             seconds = 0;
-            columns.setVisible(true);
             minutes++;
             m.setText(minutes.toString());
             if (minutes == 60) {
@@ -76,7 +82,6 @@ public class UIMain extends Application {
             }
         } else {
             seconds ++;
-            columns.setVisible(false);
         }
     }
 }
