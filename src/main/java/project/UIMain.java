@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
 import javafx.stage.Stage;
 
 import java.text.DecimalFormat;
@@ -36,7 +35,7 @@ public class UIMain extends Application {
         columns = new Text(":");
         m = new Text(fmt.format(minutes));
 
-        // set font and size
+        // set font and size and columns position
         h.setFont(new Font("Courier", 42));
         columns.setFont(new Font("Courier", 42));
         columns.setStyle(" -fx-translate-y: -3 ");
@@ -48,8 +47,10 @@ public class UIMain extends Application {
         rootNode.getChildren().addAll(h, columns, m);
 
         //draw the scene
-        Scene scene = new Scene(rootNode, 200, 50);
+        Scene scene = new Scene(rootNode, 160, 50);
         primaryStage.setScene(scene);
+        primaryStage.setAlwaysOnTop(true);
+        primaryStage.setOpacity(0.2);
         primaryStage.show();
     }
 
@@ -67,12 +68,14 @@ public class UIMain extends Application {
         int firstTimeout = 1000;
         int timeout = firstTimeout;
         long finishTime = 0L;
+        boolean isVisible = true;
 
         while (true) {
             long startTime = System.currentTimeMillis();
             try {
                 Thread.sleep(timeout);
                 elapse();
+                isVisible = twinkle(isVisible);
                 finishTime = System.currentTimeMillis();
             } catch (InterruptedException x) {
                 x.printStackTrace();
@@ -86,7 +89,18 @@ public class UIMain extends Application {
         }
     }
 
-//    computing seconds, minutes and hours
+    private static boolean twinkle(boolean isVisible) {
+
+        if (isVisible) {
+            columns.setVisible(true);
+            return isVisible = false;
+        } else {
+            columns.setVisible(false);
+            return isVisible = true;
+        }
+    }
+
+    //    computing seconds, minutes and hours
     private static void elapse() {
         DecimalFormat fmt = new DecimalFormat("00");
         if (seconds == 59) {
