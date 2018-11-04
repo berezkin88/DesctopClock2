@@ -7,6 +7,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.text.DecimalFormat;
 
@@ -17,6 +18,8 @@ import java.text.DecimalFormat;
 public class UIMain extends Application {
 
     // variables
+    private double xOffset = 0;
+    private double yOffset = 0;
     private static Time time = new Time();
     private static Integer hours = time.getHours();
     private static Integer minutes = time.getMinutes();
@@ -29,6 +32,16 @@ public class UIMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         DecimalFormat fmt = new DecimalFormat("00");
         FlowPane rootNode = new FlowPane(20, 20);
+
+//        drag a stage over the desktop
+        rootNode.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        rootNode.setOnMouseDragged(event -> {
+            primaryStage.setX(event.getScreenX() - xOffset);
+            primaryStage.setY(event.getScreenY() - yOffset);
+        });
 
         // digits and columns
         h = new Text(fmt.format(hours));
@@ -49,15 +62,18 @@ public class UIMain extends Application {
         //draw the scene
         Scene scene = new Scene(rootNode, 160, 50);
         primaryStage.setScene(scene);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setAlwaysOnTop(true);
-        primaryStage.setOpacity(0.2);
+        primaryStage.setOpacity(0.3);
         primaryStage.show();
     }
 
     public static void main(String[] args) {
 
 //        spawn the counting thread
-        new Thread(UIMain::doWork).start();
+        Thread t = new Thread(UIMain::doWork);
+        t.setDaemon(true);
+        t.start();
 
 //        launch the UI
         launch();
@@ -89,14 +105,15 @@ public class UIMain extends Application {
         }
     }
 
+//    making colons twinkles
     private static boolean twinkle(boolean isVisible) {
 
         if (isVisible) {
-            columns.setVisible(true);
-            return isVisible = false;
+            columns.setVisible(isVisible);
+            return false;
         } else {
-            columns.setVisible(false);
-            return isVisible = true;
+            columns.setVisible(isVisible);
+            return true;
         }
     }
 
